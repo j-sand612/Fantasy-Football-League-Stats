@@ -58,7 +58,7 @@ class StandingsHistory extends React.Component {
     console.log(year);
     this.setState({ loading: true });
     let apiString =
-      "https://ff-league-data.herokuapp.com/Standings?leagueID=" +
+      "https://ff-league-data.herokuapp.com/flask/Standings?leagueID=" +
       leagueID +
       "&year=" +
       year;
@@ -117,7 +117,7 @@ class StandingsHistory extends React.Component {
       });
 
     let apiCurString =
-      "https://ff-league-data.herokuapp.com/CurrentStandings?leagueID=" +
+      "https://ff-league-data.herokuapp.com/flask/CurrentStandings?leagueID=" +
       leagueID +
       "&year=" +
       year;

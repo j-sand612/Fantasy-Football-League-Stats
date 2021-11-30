@@ -18,9 +18,9 @@ def serve(path):
     return send_from_directory(app.static_folder, 'index.html')
 
 
-api.add_resource(MatchupDataApiHandler, '/Matchup/all')
-api.add_resource(LeagueDataApiHandler, '/League')
-api.add_resource(StandingsApiHandler, '/Standings')
-api.add_resource(CurrentStandingsApiHandler, '/CurrentStandings')
-api.add_resource(StandingsGraphApiHandler, '/StandingsGraph')
+api.add_resource(MatchupDataApiHandler, '/flask/Matchup/all')
+api.add_resource(LeagueDataApiHandler, '/flask/League')
+api.add_resource(StandingsApiHandler, '/flask/Standings')
+api.add_resource(CurrentStandingsApiHandler, '/flask/CurrentStandings')
+api.add_resource(StandingsGraphApiHandler, '/flask/StandingsGraph')
 

@@ -55,7 +55,7 @@ class Matchups extends React.Component {
     console.log(year);
     this.setState({ loading: true });
     let muAPIString =
-      "https://ff-league-data.herokuapp.com/Matchup/all?leagueID=" +
+      "https://ff-league-data.herokuapp.com/flask/Matchup/all?leagueID=" +
       leagueID +
       "&year=" +
       year;
