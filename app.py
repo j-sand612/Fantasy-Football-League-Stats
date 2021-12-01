@@ -1,14 +1,14 @@
 
 from flask import Flask, send_from_directory
 from flask_restful import Api, Resource, reqparse
-from flask_cors import CORS  # comment this on deployment
+# from flask_cors import CORS  # comment this on deployment
 from api.MatchupDataApiHandler import MatchupDataApiHandler
-from api.LeagueDataApiHandler import LeagueDataApiHandler
 from api.StandingsApiHandler import StandingsApiHandler
 from api.CurrentStandingsApiHandler import CurrentStandingsApiHandler
-from api.StandingsGraphApiHandler import StandingsGraphApiHandler
+import json
 
 app = Flask(__name__, static_url_path='', static_folder='frontend/build', template_folder='./frontend/public')
+app.config.from_file("./api/config/config.json", load=json.load)
 # CORS(app)  # comment this on deployment
 api = Api(app)
 
@@ -19,8 +19,6 @@ def serve(path):
 
 
 api.add_resource(MatchupDataApiHandler, '/flask/Matchup/all')
-api.add_resource(LeagueDataApiHandler, '/flask/League')
 api.add_resource(StandingsApiHandler, '/flask/Standings')
 api.add_resource(CurrentStandingsApiHandler, '/flask/CurrentStandings')
-api.add_resource(StandingsGraphApiHandler, '/flask/StandingsGraph')
 

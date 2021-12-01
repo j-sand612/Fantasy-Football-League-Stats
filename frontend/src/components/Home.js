@@ -21,7 +21,8 @@ const Home = () => {
       >
         <p>
           This site site is for visualizing data throughout your current and
-          past ESPN Fantasy Football Leagues
+          past ESPN Fantasy Football Leagues, and it is only compatible with
+          public ESPN Leagues
         </p>
       </div>
 

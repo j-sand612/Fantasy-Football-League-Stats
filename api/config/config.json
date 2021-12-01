@@ -1,0 +1,6 @@
+{
+  "ESPN_COOKIE": "AEAxEeNKrB88Vp%2FpTId5L7gZR6msXtExYPnpimar0j9jiEy5N1tEyWbRFMEyLMx7CrbRswiETXU1rI7CCHOrjLskyOIDdkJyD%2BolbOsW8BsZb3Ej9t5%2BoQ4hXkMZ3n%2FxcFhQuLt3ZHqwxUWA52VYtSZ91UPr5xUS%2BiB47vgiX41KFWKVrCIFZg286Kqot8kkkbW270WrWpyuA5CiaTo86QfHqGnLA1ZQh9TqrDJP9SBhrHtPpbg9cCbczXj8Faw7ww6tluoT8GVxPCOmLTzICmI2",
+  "SWID_COOKIE": "{3845AF95-060B-4A9B-9E60-F16218937970}",
+  "PAST_YEAR_ESPN_URL": "https://fantasy.espn.com/apis/v3/games/ffl/leagueHistory/",
+  "CURRENT_YEAR_ESPN_URL": "https://fantasy.espn.com/apis/v3/games/ffl/seasons/"
+}

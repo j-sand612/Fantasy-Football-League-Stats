@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import date
 import matplotlib.pyplot as plt
 import numpy as np
-from flask import request
+from flask import request, current_app
 
 
 class MatchupDataApiHandler(Resource):
@@ -16,14 +16,14 @@ class MatchupDataApiHandler(Resource):
         num_reg_season_wks = 13 if year<2021 else 14
 
         if(year < current_year):
-            url = "https://fantasy.espn.com/apis/v3/games/ffl/leagueHistory/" + \
+            url = current_app.config["PAST_YEAR_ESPN_URL"] + \
             str(league_id) + "?seasonId=" + str(year)
         else:
-            url = "https://fantasy.espn.com/apis/v3/games/ffl/seasons/" + str(year) + "/segments/0/leagues/" + str(league_id)
+            url = current_app.config["CURRENT_YEAR_ESPN_URL"] + str(year) + "/segments/0/leagues/" + str(league_id)
 
 
-        espn2_cookie = "AEAxEeNKrB88Vp%2FpTId5L7gZR6msXtExYPnpimar0j9jiEy5N1tEyWbRFMEyLMx7CrbRswiETXU1rI7CCHOrjLskyOIDdkJyD%2BolbOsW8BsZb3Ej9t5%2BoQ4hXkMZ3n%2FxcFhQuLt3ZHqwxUWA52VYtSZ91UPr5xUS%2BiB47vgiX41KFWKVrCIFZg286Kqot8kkkbW270WrWpyuA5CiaTo86QfHqGnLA1ZQh9TqrDJP9SBhrHtPpbg9cCbczXj8Faw7ww6tluoT8GVxPCOmLTzICmI2"    
-        swid_cookie = "{3845AF95-060B-4A9B-9E60-F16218937970}"  
+        espn2_cookie = current_app.config['ESPN_COOKIE'] 
+        swid_cookie =  current_app.config['SWID_COOKIE']
         r = requests.get(url, cookies={"swid": swid_cookie,
                           "espn_s2": espn2_cookie}, params={"view": "mMatchup"})
 

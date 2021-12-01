@@ -22,6 +22,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import Grid from "@mui/material/Grid";
 
+import appConfig from "../config/config";
+import Alert from "@mui/material/Alert";
+
 class Matchups extends React.Component {
   constructor(props) {
     super(props);
@@ -47,15 +50,16 @@ class Matchups extends React.Component {
       highestLossTeam: "",
       lowestWinPoints: "",
       lowestWinTeam: "",
+      error: false,
     };
   }
 
   handleSubmit = (leagueID, year) => {
-    console.log(leagueID);
-    console.log(year);
-    this.setState({ loading: true });
+    this.setState({ loading: true, error: false });
     let muAPIString =
-      "https://ff-league-data.herokuapp.com/flask/Matchup/all?leagueID=" +
+      appConfig.apiURL +
+      appConfig.matchupPath +
+      "?leagueID=" +
       leagueID +
       "&year=" +
       year;
@@ -88,6 +92,7 @@ class Matchups extends React.Component {
         this.setState({ matchups, matchupsResponse, weeks, week });
       })
       .catch((error) => {
+        this.setState({ error: true, loading: false });
         console.log(error);
       });
   };
@@ -522,6 +527,14 @@ class Matchups extends React.Component {
                   </Grid>
                 </Box>
               </div>
+            </>
+          ) : (
+            <></>
+          )}
+
+          {this.state.error ? (
+            <>
+              <Alert severity="error">Error retrieving data</Alert>
             </>
           ) : (
             <></>

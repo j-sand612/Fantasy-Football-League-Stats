@@ -17,6 +17,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import axios from "axios";
 
+import appConfig from "../config/config";
+import Alert from "@mui/material/Alert";
+
 class StandingsHistory extends React.Component {
   constructor(props) {
     super(props);
@@ -27,6 +30,7 @@ class StandingsHistory extends React.Component {
       standings: 0,
       curStandingsResponse: 0,
       loading: false,
+      error: false,
     };
   }
 
@@ -54,11 +58,11 @@ class StandingsHistory extends React.Component {
   ];
 
   handleSubmit = (leagueID, year) => {
-    console.log(leagueID);
-    console.log(year);
-    this.setState({ loading: true });
+    this.setState({ loading: true, error: false });
     let apiString =
-      "https://ff-league-data.herokuapp.com/flask/Standings?leagueID=" +
+      appConfig.apiURL +
+      appConfig.standingsPath +
+      "?leagueID=" +
       leagueID +
       "&year=" +
       year;
@@ -113,11 +117,14 @@ class StandingsHistory extends React.Component {
         this.setState({ response, data, teams });
       })
       .catch((error) => {
+        this.setState({ error: true, loading: false });
         console.log(error);
       });
 
     let apiCurString =
-      "https://ff-league-data.herokuapp.com/flask/CurrentStandings?leagueID=" +
+      appConfig.apiURL +
+      appConfig.currentStandingsPath +
+      "?leagueID=" +
       leagueID +
       "&year=" +
       year;
@@ -135,6 +142,7 @@ class StandingsHistory extends React.Component {
         this.setState({ standings, curStandingsResponse });
       })
       .catch((error) => {
+        this.setState({ error: true, loading: false });
         console.log(error);
       });
   };
@@ -185,6 +193,14 @@ class StandingsHistory extends React.Component {
                   rowsPerPageOptions={[]}
                 />
               </div>
+            </>
+          ) : (
+            <></>
+          )}
+
+          {this.state.error ? (
+            <>
+              <Alert severity="error">Error retrieving data</Alert>
             </>
           ) : (
             <></>
