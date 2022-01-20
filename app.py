@@ -7,7 +7,8 @@ from api.StandingsApiHandler import StandingsApiHandler
 from api.CurrentStandingsApiHandler import CurrentStandingsApiHandler
 import json
 
-app = Flask(__name__, static_url_path='', static_folder='frontend/build', template_folder='./frontend/public')
+app = Flask(__name__, static_url_path='',
+            static_folder='frontend/build', template_folder='./frontend/public')
 app.config.from_file("./api/config/config.json", load=json.load)
 # CORS(app)  # comment this on deployment
 api = Api(app)
@@ -21,4 +22,3 @@ def serve(path):
 api.add_resource(MatchupDataApiHandler, '/flask/Matchup/all')
 api.add_resource(StandingsApiHandler, '/flask/Standings')
 api.add_resource(CurrentStandingsApiHandler, '/flask/CurrentStandings')
-
