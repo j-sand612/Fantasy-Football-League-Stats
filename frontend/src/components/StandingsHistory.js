@@ -91,7 +91,7 @@ class StandingsHistory extends React.Component {
             }
           }
           let teamLine = new chartLineModel(
-            data[i].Team,
+            this.acr(data[i].Team),
             standingsData,
             this.lineColors[i],
             "1"
@@ -147,6 +147,21 @@ class StandingsHistory extends React.Component {
       });
   };
 
+  acr(str){
+    console.log(str)
+    let words, acronym, nextWord;
+
+    words = str.split(' ');
+    acronym= "";
+    let index = 0
+    while (index<words.length) {
+            nextWord = words[index];
+            acronym = acronym + nextWord.charAt(0);
+            index = index + 1 ;
+    }
+    return acronym
+  }
+
   componentDidMount() {}
 
   render() {
@@ -154,6 +169,23 @@ class StandingsHistory extends React.Component {
       <div>
         <SearchFields handleSubmitButton={this.handleSubmit}></SearchFields>
         <div>
+          {this.state.error ? (
+            <>
+              <Alert severity="error">Error retrieving data</Alert>
+            </>
+          ) : (
+            <></>
+          )}
+
+          {this.state.loading ? (
+            <>
+              <div style={{ alignContent: "center" }}>
+                <CircularProgress color="success" />
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
           {this.state.response.status === 200 ? (
             <>
               <ResponsiveContainer width="99%" aspect={3}>
@@ -198,23 +230,7 @@ class StandingsHistory extends React.Component {
             <></>
           )}
 
-          {this.state.error ? (
-            <>
-              <Alert severity="error">Error retrieving data</Alert>
-            </>
-          ) : (
-            <></>
-          )}
-
-          {this.state.loading ? (
-            <>
-              <div style={{ alignContent: "center" }}>
-                <CircularProgress color="success" />
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
+          
         </div>
       </div>
     );

@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import SearchFields from "./SeachFields";
+import WeeklyAwardCard from "./WeeklyAwardCard/WeeklyAwardCard";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -109,20 +110,20 @@ class Matchups extends React.Component {
       if (matchups[i].Week === week) {
         if (matchups[i].Score1 > maxScore) {
           maxScore = matchups[i].Score1;
-          maxTeam = matchups[i].Team1Name;
+          maxTeam = this.acr(matchups[i].Team1Name);
         }
         if (matchups[i].Score2 > maxScore) {
           maxScore = matchups[i].Score2;
-          maxTeam = matchups[i].Team2Name;
+          maxTeam = this.acr(matchups[i].Team2Name);
         }
 
         if (matchups[i].Score1 < minScore) {
           minScore = matchups[i].Score1;
-          minTeam = matchups[i].Team1Name;
+          minTeam = this.acr(matchups[i].Team1Name);
         }
         if (matchups[i].Score2 < minScore) {
           minScore = matchups[i].Score2;
-          minTeam = matchups[i].Team2Name;
+          minTeam = this.acr(matchups[i].Team2Name);
         }
       }
     }
@@ -132,6 +133,21 @@ class Matchups extends React.Component {
       minScore,
       minTeam,
     });
+  }
+
+  acr(str){
+    console.log(str)
+    let words, acronym, nextWord;
+
+    words = str.split(' ');
+    acronym= "";
+    let index = 0
+    while (index<words.length) {
+            nextWord = words[index];
+            acronym = acronym + nextWord.charAt(0);
+            index = index + 1 ;
+    }
+    return acronym
   }
 
   setBlowoutCloseWin(week, matchups) {
@@ -153,7 +169,7 @@ class Matchups extends React.Component {
           maxScoreDifferenceString =
             matchups[i].Score1 + " - " + matchups[i].Score2;
           maxScoreDifferenceTeams =
-            matchups[i].Team1Name + "\n vs \n" + matchups[i].Team2Name;
+            this.acr(matchups[i].Team1Name) + "\n vs \n" + this.acr(matchups[i].Team2Name);
         }
         if (
           Math.abs(matchups[i].Score1 - matchups[i].Score2) < minScoreDifference
@@ -165,7 +181,7 @@ class Matchups extends React.Component {
             matchups[i].Score1 + " - " + matchups[i].Score2;
 
           minScoreDifferenceTeams =
-            matchups[i].Team1Name + "\n vs \n" + matchups[i].Team2Name;
+            this.acr(matchups[i].Team1Name) + "\n vs \n" + this.acr(matchups[i].Team2Name);
         }
       }
     }
@@ -191,14 +207,14 @@ class Matchups extends React.Component {
           maxScoreTotal = matchups[i].Score1 + matchups[i].Score2;
           maxScoreTotalString = matchups[i].Score1 + " - " + matchups[i].Score2;
           maxScoreTotalTeams =
-            matchups[i].Team1Name + "\n vs \n" + matchups[i].Team2Name;
+            this.acr(matchups[i].Team1Name) + "\n vs \n" + this.acr(matchups[i].Team2Name);
         }
         if (matchups[i].Score1 + matchups[i].Score2 < minScoreTotal) {
           minScoreTotal = matchups[i].Score1 + matchups[i].Score2;
           minScoreTotalString = matchups[i].Score1 + " - " + matchups[i].Score2;
 
           minScoreTotalTeams =
-            matchups[i].Team1Name + "\n vs \n" + matchups[i].Team2Name;
+            this.acr(matchups[i].Team1Name) + "\n vs \n" + this.acr(matchups[i].Team2Name);
         }
       }
     }
@@ -222,23 +238,23 @@ class Matchups extends React.Component {
         if (matchups[i].Score1 > matchups[i].Score2) {
           if (matchups[i].Score1 < lowestWinPoints) {
             lowestWinPoints = matchups[i].Score1;
-            lowestWinTeam = matchups[i].Team1Name;
+            lowestWinTeam = this.acr(matchups[i].Team1Name);
           }
 
           if (matchups[i].Score2 > highestLossPoints) {
             highestLossPoints = matchups[i].Score2;
-            highestLossTeam = matchups[i].Team2Name;
+            highestLossTeam = this.acr(matchups[i].Team2Name);
           }
         }
         if (matchups[i].Score2 > matchups[i].Score1) {
           if (matchups[i].Score2 < lowestWinPoints) {
             lowestWinPoints = matchups[i].Score2;
-            lowestWinTeam = matchups[i].Team2Name;
+            lowestWinTeam = this.acr(matchups[i].Team2Name);
           }
 
           if (matchups[i].Score1 > highestLossPoints) {
             highestLossPoints = matchups[i].Score1;
-            highestLossTeam = matchups[i].Team1Name;
+            highestLossTeam = this.acr(matchups[i].Team1Name);
           }
         }
       }
@@ -266,6 +282,25 @@ class Matchups extends React.Component {
       <div>
         <SearchFields handleSubmitButton={this.handleSubmit}></SearchFields>
         <div>
+          {this.state.error ? (
+            <>
+              <Alert severity="error">Error retrieving data</Alert>
+            </>
+          ) : (
+            <></>
+          )}
+
+          {this.state.loading ? (
+            <>
+              <div style={{ alignContent: "center" }}>
+                <CircularProgress color="success" />
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+
+
           {this.state.matchupsResponse.status === 200 ? (
             <>
               <Box sx={{ minWidth: 120 }}>
@@ -308,7 +343,7 @@ class Matchups extends React.Component {
                           }}
                         >
                           <TableCell component="th" scope="row">
-                            {m.Team1Name}&nbsp;vs.&nbsp;{m.Team2Name}
+                            {this.acr(m.Team1Name)}&nbsp;vs.&nbsp;{this.acr(m.Team2Name)}
                           </TableCell>
                           <TableCell align="right">
                             {m.Score1}&nbsp;-&nbsp;{m.Score2}
@@ -328,201 +363,34 @@ class Matchups extends React.Component {
                 <Box sx={{ flexGrow: 1 }}>
                   <Grid container spacing={2} columns={4}>
                     <Grid item xs={1}>
-                      <Card sx={{ maxWidth: 345, maxHeight: 220 }}>
-                        <CardContent sx={{ maxWidth: 345, minHeight: 220 }}>
-                          <Typography gutterBottom variant="h5" component="div">
-                            Highest Scoring Team
-                          </Typography>
-                          <Typography gutterBottom variant="h4" component="div">
-                            {this.state.maxTeam}
-                          </Typography>
-                          <Typography
-                            sx={{
-                              display: "flex",
-                              justiyContent: "space-between",
-                              flexDirection: "column",
-                            }}
-                            variant="body2"
-                            color="text.secondary"
-                          >
-                            {this.state.maxScore} Points
-                          </Typography>
-                        </CardContent>
-                      </Card>
+                      <WeeklyAwardCard awardName="Highest Scoring Team" teamNames={this.state.maxTeam} points={this.state.maxScore + ' Points'}></WeeklyAwardCard>
                     </Grid>
                     <Grid item xs={1}>
-                      <Card sx={{ maxWidth: 345, maxHeight: 220 }}>
-                        <CardContent sx={{ maxWidth: 345, minHeight: 220 }}>
-                          <Typography gutterBottom variant="h5" component="div">
-                            Lowest Scoring Team
-                          </Typography>
-                          <Typography gutterBottom variant="h4" component="div">
-                            {this.state.minTeam}
-                          </Typography>
-
-                          <Typography
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              flexDirection: "column",
-                            }}
-                            variant="body2"
-                            color="text.secondary"
-                          >
-                            {this.state.minScore} Points
-                          </Typography>
-                        </CardContent>
-                      </Card>
+                      <WeeklyAwardCard awardName="Lowest Scoring Team" teamNames={this.state.minTeam} points={this.state.minScore + ' Points'}></WeeklyAwardCard>
                     </Grid>
 
                     <Grid item xs={1}>
-                      <Card sx={{ maxWidth: 345, maxHeight: 220 }}>
-                        <CardContent sx={{ maxWidth: 345, minHeight: 220 }}>
-                          <Typography gutterBottom variant="h5" component="div">
-                            Biggest Blowout
-                          </Typography>
-                          <Typography gutterBottom variant="h4" component="div">
-                            {this.state.maxScoreDifferenceTeams}
-                          </Typography>
-
-                          <Typography
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              flexDirection: "column",
-                            }}
-                            variant="body2"
-                            color="text.secondary"
-                          >
-                            {this.state.maxScoreDifferenceString}
-                          </Typography>
-                        </CardContent>
-                      </Card>
+                      <WeeklyAwardCard awardName="Biggest Blowout" teamNames={this.state.maxScoreDifferenceTeams} points={this.state.maxScoreDifferenceString}></WeeklyAwardCard> 
                     </Grid>
 
                     <Grid item xs={1}>
-                      <Card sx={{ maxWidth: 345, maxHeight: 220 }}>
-                        <CardContent sx={{ maxWidth: 345, minHeight: 220 }}>
-                          <Typography gutterBottom variant="h5" component="div">
-                            Closest Matchup
-                          </Typography>
-                          <Typography gutterBottom variant="h4" component="div">
-                            {this.state.minScoreDifferenceTeams}
-                          </Typography>
-
-                          <Typography
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              flexDirection: "column",
-                            }}
-                            variant="body2"
-                            color="text.secondary"
-                          >
-                            {this.state.minScoreDifferenceString}
-                          </Typography>
-                        </CardContent>
-                      </Card>
+                      <WeeklyAwardCard awardName="Closest Matchup" teamNames={this.state.minScoreDifferenceTeams} points={this.state.minScoreDifferenceString}></WeeklyAwardCard>
                     </Grid>
 
                     <Grid item xs={1}>
-                      <Card sx={{ maxWidth: 345, maxHeight: 220 }}>
-                        <CardContent sx={{ maxWidth: 345, minHeight: 220 }}>
-                          <Typography gutterBottom variant="h5" component="div">
-                            Highest Scoring Game
-                          </Typography>
-                          <Typography gutterBottom variant="h4" component="div">
-                            {this.state.maxScoreTotalTeams}
-                          </Typography>
-
-                          <Typography
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              flexDirection: "column",
-                            }}
-                            variant="body2"
-                            color="text.secondary"
-                          >
-                            {this.state.maxScoreTotalString}
-                          </Typography>
-                        </CardContent>
-                      </Card>
+                      <WeeklyAwardCard awardName="Highest Scoring Game" teamNames={this.state.maxScoreTotalTeams} points={this.state.maxScoreTotalString}></WeeklyAwardCard>
                     </Grid>
 
                     <Grid item xs={1}>
-                      <Card sx={{ maxWidth: 345, maxHeight: 220 }}>
-                        <CardContent sx={{ maxWidth: 345, minHeight: 220 }}>
-                          <Typography gutterBottom variant="h5" component="div">
-                            Lowest Scoring Game
-                          </Typography>
-                          <Typography gutterBottom variant="h4" component="div">
-                            {this.state.minScoreTotalTeams}
-                          </Typography>
-
-                          <Typography
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              flexDirection: "column",
-                            }}
-                            variant="body2"
-                            color="text.secondary"
-                          >
-                            {this.state.minScoreTotalString}
-                          </Typography>
-                        </CardContent>
-                      </Card>
+                      <WeeklyAwardCard awardName="Lowest Scoring Game" teamNames={this.state.minScoreTotalTeams} points={this.state.minScoreTotalString}></WeeklyAwardCard>
                     </Grid>
 
                     <Grid item xs={1}>
-                      <Card sx={{ maxWidth: 345, maxHeight: 220 }}>
-                        <CardContent sx={{ maxWidth: 345, minHeight: 220 }}>
-                          <Typography gutterBottom variant="h5" component="div">
-                            Highest Points in Loss
-                          </Typography>
-                          <Typography gutterBottom variant="h4" component="div">
-                            {this.state.highestLossTeam}
-                          </Typography>
-
-                          <Typography
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              flexDirection: "column",
-                            }}
-                            variant="body2"
-                            color="text.secondary"
-                          >
-                            {this.state.highestLossPoints}
-                          </Typography>
-                        </CardContent>
-                      </Card>
+                      <WeeklyAwardCard awardName="Highest Points in Loss" teamNames={this.state.highestLossTeam} points={this.state.highestLossPoints + ' Points'}></WeeklyAwardCard>
                     </Grid>
 
                     <Grid item xs={1}>
-                      <Card sx={{ maxWidth: 345, maxHeight: 220 }}>
-                        <CardContent sx={{ maxWidth: 345, minHeight: 220 }}>
-                          <Typography gutterBottom variant="h5" component="div">
-                            Lowest Points in Win
-                          </Typography>
-                          <Typography gutterBottom variant="h4" component="div">
-                            {this.state.lowestWinTeam}
-                          </Typography>
-
-                          <Typography
-                            sx={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              flexDirection: "column",
-                            }}
-                            variant="body2"
-                            color="text.secondary"
-                          >
-                            {this.state.lowestWinPoints}
-                          </Typography>
-                        </CardContent>
-                      </Card>
+                      <WeeklyAwardCard awardName="Lowest Points in Win" teamNames={this.state.lowestWinTeam} points={this.state.lowestWinPoints + ' Points'}></WeeklyAwardCard>
                     </Grid>
                   </Grid>
                 </Box>
@@ -532,23 +400,7 @@ class Matchups extends React.Component {
             <></>
           )}
 
-          {this.state.error ? (
-            <>
-              <Alert severity="error">Error retrieving data</Alert>
-            </>
-          ) : (
-            <></>
-          )}
-
-          {this.state.loading ? (
-            <>
-              <div style={{ alignContent: "center" }}>
-                <CircularProgress color="success" />
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
+          
         </div>
       </div>
     );
