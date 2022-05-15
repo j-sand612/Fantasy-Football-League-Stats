@@ -110,20 +110,20 @@ class Matchups extends React.Component {
       if (matchups[i].Week === week) {
         if (matchups[i].Score1 > maxScore) {
           maxScore = matchups[i].Score1;
-          maxTeam = this.acr(matchups[i].Team1Name);
+          maxTeam = matchups[i].Team1Name;
         }
         if (matchups[i].Score2 > maxScore) {
           maxScore = matchups[i].Score2;
-          maxTeam = this.acr(matchups[i].Team2Name);
+          maxTeam = matchups[i].Team2Name;
         }
 
         if (matchups[i].Score1 < minScore) {
           minScore = matchups[i].Score1;
-          minTeam = this.acr(matchups[i].Team1Name);
+          minTeam = matchups[i].Team1Name;
         }
         if (matchups[i].Score2 < minScore) {
           minScore = matchups[i].Score2;
-          minTeam = this.acr(matchups[i].Team2Name);
+          minTeam = matchups[i].Team2Name;
         }
       }
     }
@@ -169,7 +169,7 @@ class Matchups extends React.Component {
           maxScoreDifferenceString =
             matchups[i].Score1 + " - " + matchups[i].Score2;
           maxScoreDifferenceTeams =
-            this.acr(matchups[i].Team1Name) + "\n vs \n" + this.acr(matchups[i].Team2Name);
+            matchups[i].Team1Name + "\n vs \n" + matchups[i].Team2Name;
         }
         if (
           Math.abs(matchups[i].Score1 - matchups[i].Score2) < minScoreDifference
@@ -181,7 +181,7 @@ class Matchups extends React.Component {
             matchups[i].Score1 + " - " + matchups[i].Score2;
 
           minScoreDifferenceTeams =
-            this.acr(matchups[i].Team1Name) + "\n vs \n" + this.acr(matchups[i].Team2Name);
+            matchups[i].Team1Name + "\n vs \n" + matchups[i].Team2Name;
         }
       }
     }
@@ -207,14 +207,14 @@ class Matchups extends React.Component {
           maxScoreTotal = matchups[i].Score1 + matchups[i].Score2;
           maxScoreTotalString = matchups[i].Score1 + " - " + matchups[i].Score2;
           maxScoreTotalTeams =
-            this.acr(matchups[i].Team1Name) + "\n vs \n" + this.acr(matchups[i].Team2Name);
+            matchups[i].Team1Name + "\n vs \n" + matchups[i].Team2Name;
         }
         if (matchups[i].Score1 + matchups[i].Score2 < minScoreTotal) {
           minScoreTotal = matchups[i].Score1 + matchups[i].Score2;
           minScoreTotalString = matchups[i].Score1 + " - " + matchups[i].Score2;
 
           minScoreTotalTeams =
-            this.acr(matchups[i].Team1Name) + "\n vs \n" + this.acr(matchups[i].Team2Name);
+            matchups[i].Team1Name + "\n vs \n" + matchups[i].Team2Name;
         }
       }
     }
@@ -238,23 +238,23 @@ class Matchups extends React.Component {
         if (matchups[i].Score1 > matchups[i].Score2) {
           if (matchups[i].Score1 < lowestWinPoints) {
             lowestWinPoints = matchups[i].Score1;
-            lowestWinTeam = this.acr(matchups[i].Team1Name);
+            lowestWinTeam = matchups[i].Team1Name;
           }
 
           if (matchups[i].Score2 > highestLossPoints) {
             highestLossPoints = matchups[i].Score2;
-            highestLossTeam = this.acr(matchups[i].Team2Name);
+            highestLossTeam = matchups[i].Team2Name;
           }
         }
         if (matchups[i].Score2 > matchups[i].Score1) {
           if (matchups[i].Score2 < lowestWinPoints) {
             lowestWinPoints = matchups[i].Score2;
-            lowestWinTeam = this.acr(matchups[i].Team2Name);
+            lowestWinTeam = matchups[i].Team2Name;
           }
 
           if (matchups[i].Score1 > highestLossPoints) {
             highestLossPoints = matchups[i].Score1;
-            highestLossTeam = this.acr(matchups[i].Team1Name);
+            highestLossTeam = matchups[i].Team1Name;
           }
         }
       }
@@ -343,7 +343,7 @@ class Matchups extends React.Component {
                           }}
                         >
                           <TableCell component="th" scope="row">
-                            {this.acr(m.Team1Name)}&nbsp;vs.&nbsp;{this.acr(m.Team2Name)}
+                            {m.Team1Name}&nbsp;vs.&nbsp;{m.Team2Name}
                           </TableCell>
                           <TableCell align="right">
                             {m.Score1}&nbsp;-&nbsp;{m.Score2}

@@ -91,7 +91,7 @@ class StandingsHistory extends React.Component {
             }
           }
           let teamLine = new chartLineModel(
-            this.acr(data[i].Team),
+            data[i].Team,
             standingsData,
             this.lineColors[i],
             "1"
